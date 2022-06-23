@@ -1,0 +1,72 @@
+pipeline {
+    agent 'any'
+    stages {
+        stage('git-clone') {
+            steps {
+        sh '''
+        pwd
+        rm -rf devops
+        ls -ll
+        git clone https://github.com/bandianilkumar/devops.git
+        '''
+          }
+        }
+          stage('compile') {
+            steps {
+        sh '''
+        pwd
+        ls -ll
+        cd devops
+        ls -ll
+        mvn clean
+        mvn compile
+        '''
+          }
+        }
+           stage('test') {
+            steps {
+        sh '''
+        pwd
+        ls -ll
+        cd devops
+        ls -ll
+        mvn test
+        '''
+          }
+        }
+           stage('code-quality') {
+            steps {
+        sh '''
+        pwd
+        ls -ll
+        cd devops
+        ls -ll
+        mvn sonar:sonar
+        '''
+          }
+        }
+          stage('package') {
+            steps {
+        sh '''
+        pwd
+        ls -ll
+        cd devops
+        ls -ll
+        mvn package
+        '''
+          }
+        }
+         stage('Artifactory') {
+            steps {
+        sh '''
+        pwd
+        ls -ll
+        cd devops
+        ls -ll
+        curl -uadmin:AP3HSiCQEioFp7fgybwMm7wAib2 -T. /c/Users/Bandi Anilkumar/.jenkins/workspace/pipeline2/devops/target/book-1.0.0.jar "http://localhost:8081/artifactory/jfrog-devops/"
+
+        '''
+          }
+        }
+    }
+}
